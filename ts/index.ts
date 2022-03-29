@@ -1,66 +1,37 @@
-import { clear } from 'console';
-import promptSync from 'prompt-sync';
+//express
+import express from 'express'
+const app = express();
+//port
+const port:number = 2020;
+//handlebars
+import { engine } from 'express-handlebars';
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', './views');
+app.use(express.json())
+app.use(express.urlencoded())
 
+app.listen(port, ()=>{
+    console.log('http://127.0.0.1:'+port);
+})
+app.get('/' , (req,res)=>{
 
-const prompt = promptSync()
+    res.render('main',{layout: 'index'});
+    
+})
 
+const arrayobj:(number|string|object)[] = [];
 
-// let  x = +prompt("x:")
-// let y = 7*x+3*x+6
+app.post('/detal' ,(req ,res)=>{
 
-// console.log(y)
-  
-// let pro = prompt("izoh:")
-
-//  function prohtika(){
-//     if(pro == "abbos"){
-//         return true
-//     } 
-//     return false
-       
-//  }
-  
-//  let funct = prohtika()
-//  console.log(funct)
-// for(let i = 20; i<35; i++){
-//      console.log(i)
-// }
-
-// let n = +prompt('n')
-//   for(let i=0; i<n;i++){
-//       console.log(i)
-//   }
-
-//  let i = +prompt("i:")
-
-// for(let i=n;i<10;i++){
-//     for(let a=0;a<n;a++){
-//         console.log(a+"*"+i+"="+a*i)
-//     }
-// }
-// for(let i = 0;i < 10; i++){
-//     for(let a = 0;a < 10;a++){
-//         console.log(a+' * '+i+' = '+a*i)
-//     }
-//     console.log('      ')
-
-// }
-
-
-// var a = prompt("a:")
-
-// function hello(){
-   
-//     return "Hello " +a
-// }
-
-// let func = hello()
-// console.log(func)
-
-
- let i = 2;
- let b = "abbos"
-while (i < 4) {
-     console.log( i +" "+b+ " " +" kichkina ku bular" )
-       i++
- }
+    let obj = {
+        name:req.body.name,
+        fam:req.body.fam,
+        age:req.body.age
+    }
+    arrayobj.push(obj);
+    res.redirect('/')
+})
+app.get('/table' , (req,res)=>{
+    res.render('table', {layout: 'index' , array:arrayobj})
+})
